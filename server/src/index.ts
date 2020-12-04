@@ -10,6 +10,7 @@ import getPacketParticipantsData, {
 import getPacketCarSetupData, { PacketCarSetupData } from "./F12020-Telemetly/PacketCarSetupData";
 import { createTimeTableResponse } from "./F12020-Telemetly/response/TimeTable";
 import { createSettingTableResponse } from "./F12020-Telemetly/response/SettingTable";
+import {_createBattleTelemetryResponse} from "./F12020-Telemetly/response/BattleTelemetry";
 import express from "express";
 
 
@@ -81,6 +82,15 @@ router.get("/settingtable", (req: express.Request, res: express.Response) => {
         participantsData,
         carSetupData
       )
+    })
+  );
+});
+
+router.get("/battletelemetry", (req: express.Request, res: express.Response) => {
+  res.send(
+    JSON.stringify({
+      status: 200,
+      battletelemetry: _createBattleTelemetryResponse()
     })
   );
 });
