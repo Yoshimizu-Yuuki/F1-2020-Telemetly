@@ -32,31 +32,75 @@ function BattleTelemetry() {
       <div className='driver-container'>
         <div className='speedmeter-container'>
           <div className='speedmeter'>
-            <span className="drs">DRS</span>
-            <span className="speed">300</span>
-            <span className="gear">7</span>
-            <span className="ers">ERS:25%</span>
+            <span className='drs'>DRS</span>
+            <span className='speed'>300</span>
+            <span className='gear'>7</span>
+            <span className='ers'>ERS:25%</span>
           </div>
         </div>
         <div className='tyreinfo-container'>
-            <span className="tyre">SOFT</span>
-            <span className="tyrelap">25 Lap ago</span>
-            <div className="tyredamage-container">
-              <span className="fl">40</span>
-              <span className="fr">35</span>
-              <span className="rl">38</span>
-              <span className="rr">32</span>
-            </div>
+          <span className='tyre'>SOFT</span>
+          <span className='tyrelap'>25 Lap ago</span>
+          <div className='tyredamage-container'>
+            <span className='fl'>40</span>
+            <span className='fr'>35</span>
+            <span className='rl'>38</span>
+            <span className='rr'>32</span>
+          </div>
         </div>
         <div className='driverinfo-container'>
           <div className='position'>1</div>
           <div className='team'>Redbull</div>
-          
+
           <div className='driver'>
             <div className='carnumber'>33</div>
-            Max Verrstapen</div>
-          <div className="lastlap">LASTLAP 1:32:359</div>
+            Max Verrstapen
+          </div>
+          <div className='lastlap'>LASTLAP 1:32:359</div>
         </div>
+      </div>
+
+      {/* 追加 */}
+      <div className='driver-container'>
+        <div className='speedmeter-container'>
+          <div className='speedmeter'>
+            <span className='drs'>DRS</span>
+            <span className='speed'>300</span>
+            <span className='gear'>7</span>
+            <span className='ers'>ERS:25%</span>
+          </div>
+        </div>
+        <div className='tyreinfo-container'>
+          <span className='tyre'>SOFT</span>
+          <span className='tyrelap'>25 Lap ago</span>
+          <div className='tyredamage-container'>
+            <span className='fl'>40</span>
+            <span className='fr'>35</span>
+            <span className='rl'>38</span>
+            <span className='rr'>32</span>
+          </div>
+        </div>
+        <div className='driverinfo-container'>
+          <div className='position'>1</div>
+          <div className='team'>Redbull</div>
+
+          <div className='driver'>
+            <div className='carnumber'>33</div>
+            Max Verrstapen
+          </div>
+          <div className='lastlap'>LASTLAP 1:32:359</div>
+        </div>
+      </div>
+      <div className='lapinfo-container'>
+        <div>LAP 5/53</div>
+      </div>
+      <div className='distance-container'>
+        <div>DISTANCE</div>
+        <div>580m</div>
+      </div>
+      <div className='drszone-container'>
+        <div>DRSZone</div>
+        <div>580m</div>
       </div>
     </div>
   );
