@@ -7,8 +7,12 @@ import getPacketLapData, {
 import getPacketParticipantsData, {
   PacketParticipantsData
 } from "./F12020-Telemetly/PacketParticipantsData";
+import getPacketCarSetupData, { PacketCarSetupData } from "./F12020-Telemetly/PacketCarSetupData";
 import { createTimeTableResponse } from "./F12020-Telemetly/response/TimeTable";
+import { createSettingTableResponse } from "./F12020-Telemetly/response/SettingTable";
 import express from "express";
+
+
 const cors = require("cors");
 const app: express.Express = express();
 
@@ -22,6 +26,7 @@ var server = dgram.createSocket("udp4");
 let lapData: PacketLapData | null = null;
 let carStatusData: PacketCarStatusData | null = null;
 let participantsData: PacketParticipantsData | null = null;
+let carSetupData: PacketCarSetupData | null = null;
 
 server.on("listening", function () {
   const address = server.address();
@@ -30,13 +35,19 @@ server.on("listening", function () {
   );
 });
 
-server.on("message", function (message: Buffer, remote: any) {
+server.on("message", function (message: any, remote: any) {
   if (message.byteLength == 1213) {
-    participantsData = getPacketParticipantsData(message);
+    const result = getPacketParticipantsData(message);
+    participantsData = result;
   } else if (message.byteLength == 1190) {
-    lapData = getPacketLapData(message);
+    const result = getPacketLapData(message);
+    lapData = result;
   } else if (message.byteLength == 1344) {
-    carStatusData = getPacketCarStatusData(message);
+    const result = getPacketCarStatusData(message);
+    carStatusData = result;
+  }else if(message.byteLength == 1102){
+    const result = getPacketCarSetupData(message);
+    carSetupData = result;
   }
 });
 
@@ -47,14 +58,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const router: express.Router = express.Router();
-router.get("/timesheet", (req: express.Request, res: express.Response) => {
+router.get("/timetable", (req: express.Request, res: express.Response) => {
   res.send(
     JSON.stringify({
       status: 200,
-      timeTable: createTimeTableResponse(
+      timetable: createTimeTableResponse(
         lapData,
         carStatusData,
         participantsData
+      )
+    })
+  );
+});
+
+router.get("/settingtable", (req: express.Request, res: express.Response) => {
+  res.send(
+    JSON.stringify({
+      status: 200,
+      settingtable: createSettingTableResponse(
+        lapData,
+        carStatusData,
+        participantsData,
+        carSetupData
       )
     })
   );

@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.scss";
-import TimeTable from "./pages/TimeTable";
+import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <TimeTable />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

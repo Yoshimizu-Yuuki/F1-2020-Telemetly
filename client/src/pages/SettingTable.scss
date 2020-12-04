@@ -3,22 +3,25 @@
   min-height: 100vh;
   background-color: #222;
 
-  .timetable {
+  .settingtable {
     width: 100%;
     border: none;
     border-spacing: 0;
     color: white;
     text-shadow: 1px 1px 2px black;
 
-    .timetable-header {
+    .settingtable-header {
       background: linear-gradient(#e66465, #9f3b42);
       box-shadow: 1px 0px 2px black;
       height: 3vw;
       tr {
         height: inherit;
+        th{
+          font-size:0.5vw;
+        }
       }
     }
-    .timetable-body {
+    .settingtable-body {
       tr {
         border-bottom: solid 1px white;
         &:nth-child(2n + 1) {
@@ -27,6 +30,7 @@
         td {
           color: white;
           text-shadow: 1px 1px 2px black;
+          font-size:0.5vw;
         }
       }
     }
