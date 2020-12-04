@@ -2,4 +2,33 @@
   width: 100vw;
   min-height: 100vh;
   background-color: #222;
+
+  .timetable {
+    width: 100%;
+    border: none;
+    border-spacing: 0;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+
+    .timetable-header {
+      background: linear-gradient(#e66465, #9f3b42);
+      // background-color: #9f3b42;
+      height: 3vw;
+      tr {
+        height: inherit;
+      }
+    }
+    .timetable-body {
+      tr {
+        border-bottom: solid 1px white;
+        &:nth-child(2n + 1) {
+          background-color: #666;
+        }
+        td {
+          color: white;
+          text-shadow: 1px 1px 2px black;
+        }
+      }
+    }
+  }
 }

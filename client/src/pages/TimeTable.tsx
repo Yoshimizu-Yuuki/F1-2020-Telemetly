@@ -8,28 +8,29 @@ function TimeTable() {
 
   useEffect(() => {
     // Update the document title using the browser API
-    const instance = setInterval(()=>{
-      fetch("",{
-        method:"GET"
-      }).then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        setTimeTableData(data.timeTable);
+    const instance = setInterval(() => {
+      fetch("", {
+        method: "GET"
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    },5000);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+          setTimeTableData(data.timeTable);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }, 5000);
 
-    return (()=>{
+    return () => {
       clearInterval(instance);
-    })
+    };
   });
 
   return (
     <div className='container'>
-      <table>
-        <thead>
+      <table className='timetable'>
+        <thead className='timetable-header'>
           <tr>
             <th>Team</th>
             <th>Car No</th>
@@ -45,22 +46,23 @@ function TimeTable() {
             <th>BestLapTime</th>
           </tr>
         </thead>
-        <tbody>
-          {timeTableData.map((el:TimeTableResponse)=>{
-            <th>{el.teamName}</th>
-            <th>{el.carNumber}</th>
-            <th>{el.driverName}</th>
-            <th>{el.visualTyreCompound}</th>
-            <th>{el.currentLapNumber}</th>
-            <th>{el.carPosition}</th>
-            <th>{el.sector1}</th>
-            <th>{el.sector2}</th>
-            <th>S3</th>
-            <th>{el.currentLapTime}</th>
-            <th>{el.currentLapNumber}</th>
-            <th>{el.bestLapTime}</th>
-          })
-        }
+        <tbody className='timetable-body'>
+          {timeTableData.map((el: TimeTableResponse) => {
+            <tr>
+              <th>{el.teamName}</th>
+              <th>{el.carNumber}</th>
+              <th>{el.driverName}</th>
+              <th>{el.visualTyreCompound}</th>
+              <th>{el.currentLapNumber}</th>
+              <th>{el.carPosition}</th>
+              <th>{el.sector1}</th>
+              <th>{el.sector2}</th>
+              <th>S3</th>
+              <th>{el.currentLapTime}</th>
+              <th>{el.currentLapNumber}</th>
+              <th>{el.bestLapTime}</th>
+            </tr>;
+          })}
         </tbody>
       </table>
     </div>
