@@ -14,6 +14,7 @@ export default interface TimeTableResponse {
   carPosition?: number; //車のポジション
   sector1?: number; //セクター1 Time
   sector2?: number; //セクター2 Time
+  sector3?: number; //セクター3 Time
   distance?: number; //先頭との差
   lastLapTime?: number; //最後のラップタイム
   bestLapTime?: number; //べストラップ

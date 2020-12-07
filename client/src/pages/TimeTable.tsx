@@ -32,7 +32,7 @@ function TimeTable() {
       <table className='timetable'>
         <thead className='timetable-header'>
           <tr>
-          <th>Pos</th>
+            <th>Pos</th>
             <th>Team</th>
             <th>Car No</th>
             <th>Driver</th>
@@ -49,21 +49,36 @@ function TimeTable() {
         <tbody className='timetable-body'>
           {timeTableData.map((el: TimeTableResponse) => {
             return (
-            <tr>
-              <th>{el.carPosition}</th>
-              <th>{el.teamName}</th>
-              <th>{el.carNumber}</th>
-              <th>{el.driverName}</th>
-              <th>{el.visualTyreCompound}</th>
-              <th>{el.distance}</th>
-              <th>{el.currentLapNumber}</th>
-              <th>{el.sector1?el.sector1/1000:null}</th>
-              <th>{el.sector2?el.sector2/1000:null}</th>
-              <th>S3</th>
-              
-              <th>{el.lastLapTime? Math.floor(el.lastLapTime / 60) % 60 + ":" + Math.floor(el.lastLapTime % 60)+":"+Math.floor(el.lastLapTime *1000%1000):null }</th>
-              <th>{el.bestLapTime? Math.floor(el.bestLapTime / 60) % 60 + ":" + Math.floor(el.bestLapTime % 60)+":"+Math.floor(el.bestLapTime *1000%1000):null }</th>
-            </tr>
+              <tr>
+                <th>{el.carPosition}</th>
+                <th>{el.teamName}</th>
+                <th>{el.carNumber}</th>
+                <th>{el.driverName}</th>
+                <th>{el.visualTyreCompound}</th>
+                <th>{el.distance}</th>
+                <th>{el.currentLapNumber}</th>
+                <th>{el.sector1 ? el.sector1 / 1000 : null}</th>
+                <th>{el.sector2 ? el.sector2 / 1000 : null}</th>
+                <th>{el.sector3 ? el.sector3 / 1000 : null}</th>
+                <th>
+                  {el.lastLapTime
+                    ? (Math.floor(el.lastLapTime / 60) % 60) +
+                      ":" +
+                      Math.floor(el.lastLapTime % 60) +
+                      ":" +
+                      Math.floor((el.lastLapTime * 1000) % 1000)
+                    : null}
+                </th>
+                <th>
+                  {el.bestLapTime
+                    ? (Math.floor(el.bestLapTime / 60) % 60) +
+                      ":" +
+                      Math.floor(el.bestLapTime % 60) +
+                      ":" +
+                      Math.floor((el.bestLapTime * 1000) % 1000)
+                    : null}
+                </th>
+              </tr>
             );
           })}
         </tbody>
