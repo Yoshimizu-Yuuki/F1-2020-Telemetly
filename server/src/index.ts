@@ -1,6 +1,5 @@
-import getPacketCarStatusData, {
-  PacketCarStatusData
-} from "./F12020-Telemetly/PacketCarStatusData";
+import { createDeltaTime, getDeltaTime } from "./F12020-Telemetly/common/DeltaTime";
+import getPacketCarStatusData,{ PacketCarStatusData } from "./F12020-Telemetly/PacketCarStatusData";
 import getPacketLapData, {
   PacketLapData
 } from "./F12020-Telemetly/PacketLapData";
@@ -10,8 +9,10 @@ import getPacketParticipantsData, {
 import getPacketCarSetupData, { PacketCarSetupData } from "./F12020-Telemetly/PacketCarSetupData";
 import { createTimeTableResponse } from "./F12020-Telemetly/response/TimeTable";
 import { createSettingTableResponse } from "./F12020-Telemetly/response/SettingTable";
-import {_createBattleTelemetryResponse} from "./F12020-Telemetly/response/BattleTelemetry";
+import {createBattleTelemetryResponse} from "./F12020-Telemetly/response/BattleTelemetry";
 import express from "express";
+import getPacketCarTelemetryData, { PacketCarTelemetryData } from "./F12020-Telemetly/PacketCarTelemetryData";
+import getPacketSessionData, { PacketSessionData } from "./F12020-Telemetly/PacketSessionData";
 
 
 const cors = require("cors");
@@ -28,6 +29,8 @@ let lapData: PacketLapData | null = null;
 let carStatusData: PacketCarStatusData | null = null;
 let participantsData: PacketParticipantsData | null = null;
 let carSetupData: PacketCarSetupData | null = null;
+let carTelemetryData: PacketCarTelemetryData | null = null;
+let sessionData: PacketSessionData| null = null;
 
 server.on("listening", function () {
   const address = server.address();
@@ -37,12 +40,21 @@ server.on("listening", function () {
 });
 
 server.on("message", function (message: any, remote: any) {
-  if (message.byteLength == 1213) {
+  if (message.byteLength == 251) {
+    const result = getPacketSessionData(message);
+    sessionData = result;
+  } else if (message.byteLength == 1307) {
+    const result = getPacketCarTelemetryData(message);
+    carTelemetryData = result;
+  } else if (message.byteLength == 1213) {
     const result = getPacketParticipantsData(message);
     participantsData = result;
   } else if (message.byteLength == 1190) {
     const result = getPacketLapData(message);
     lapData = result;
+    if(lapData){
+      createDeltaTime(lapData);
+    }
   } else if (message.byteLength == 1344) {
     const result = getPacketCarStatusData(message);
     carStatusData = result;
@@ -90,7 +102,14 @@ router.get("/battletelemetry", (req: express.Request, res: express.Response) => 
   res.send(
     JSON.stringify({
       status: 200,
-      battletelemetry: _createBattleTelemetryResponse()
+      battletelemetry: createBattleTelemetryResponse(
+        lapData,
+        carStatusData,
+        participantsData,
+        carTelemetryData,
+        sessionData,
+        getDeltaTime()
+      )
     })
   );
 });

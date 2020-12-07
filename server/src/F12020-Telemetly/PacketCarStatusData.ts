@@ -84,7 +84,7 @@ function getCarStatusData(message: any): CarStatusData {
       message.readUInt8(32),
       message.readUInt8(33),
       message.readUInt8(34),
-      message.readUInt8(5)
+      message.readUInt8(35)
     ],
     m_frontLeftWingDamage: message.readUInt8(36),
     m_frontRightWingDamage: message.readUInt8(37),

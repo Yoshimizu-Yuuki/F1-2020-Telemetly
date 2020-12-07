@@ -39,29 +39,29 @@ export interface PacketCarTelemetryData
 
 function getCarTelemetryData(message: any): CarTelemetryData {
   return {
-    m_speed:message.readUint16LE(0),                         // Speed of car in kilometres per hour
+    m_speed:message.readUInt16LE(0),                         // Speed of car in kilometres per hour
     m_throttle:message.readFloatLE(2),                      // Amount of throttle applied (0.0 to 1.0)
     m_steer:message.readFloatLE(6),                         // Steering (-1.0 (full lock left) to 1.0 (full lock right))
     m_brake:message.readFloatLE(10),                         // Amount of brake applied (0.0 to 1.0)
-    m_clutch:message.readUint8(14),                        // Amount of clutch applied (0 to 100)
+    m_clutch:message.readUInt8(14),                        // Amount of clutch applied (0 to 100)
     m_gear:message.readInt8(15),                          // Gear selected (1-8, N=0, R=-1)
-    m_engineRPM:message.readUint16LE(16),                     // Engine RPM
-    m_drs:message.readUint8(18),                           // 0 = off, 1 = on
-    m_revLightsPercent:message.readUint8(19),              // Rev lights indicator (percentage)
-    m_brakesTemperature:[message.readUint16LE(20),message.readUint16LE(22),message.readUint16LE(24),message.readUint16LE(26)],          // Brakes temperature (celsius)[4]
-    m_tyresSurfaceTemperature:[message.readUint8(28),message.readUint8(29),message.readUint8(30),message.readUint8(31)],    // Tyres surface temperature (celsius)[4]
-    m_tyresInnerTemperature:[message.readUint8(32),message.readUint8(33),message.readUint8(34),message.readUint8(35)],      // Tyres inner temperature (celsius)[4]
-    m_engineTemperature:message.readUint16LE(36),             // Engine temperature (celsius)[4]
+    m_engineRPM:message.readUInt16LE(16),                     // Engine RPM
+    m_drs:message.readUInt8(18),                           // 0 = off, 1 = on
+    m_revLightsPercent:message.readUInt8(19),              // Rev lights indicator (percentage)
+    m_brakesTemperature:[message.readUInt16LE(20),message.readUInt16LE(22),message.readUInt16LE(24),message.readUInt16LE(26)],          // Brakes temperature (celsius)[4]
+    m_tyresSurfaceTemperature:[message.readUInt8(28),message.readUInt8(29),message.readUInt8(30),message.readUInt8(31)],    // Tyres surface temperature (celsius)[4]
+    m_tyresInnerTemperature:[message.readUInt8(32),message.readUInt8(33),message.readUInt8(34),message.readUInt8(35)],      // Tyres inner temperature (celsius)[4]
+    m_engineTemperature:message.readUInt16LE(36),             // Engine temperature (celsius)[4]
     m_tyresPressure:[message.readFloatLE(38),message.readFloatLE(42),message.readFloatLE(46),message.readFloatLE(50)],              // Tyres pressure (PSI)[4]
-    m_surfaceType:[message.readUint8(51),message.readUint8(52),message.readUint8(53),message.readUint8(54)],                // Driving surface, see appendices[4]
+    m_surfaceType:[message.readUInt8(54),message.readUInt8(55),message.readUInt8(56),message.readUInt8(57)],                // Driving surface, see appendices[4]
   };
 }
 
 //1307Byte
 function getTelemetryData(message: any): CarTelemetryData[] {
-  //ヘッダー（24Byte）を除くと55Byte×22台となる。
+  //ヘッダー（24Byte）を除くと58Byte×22台となる。
   const offset = 24;
-  const size = 55;
+  const size = 58;
   return [
     0,
     1,
@@ -94,25 +94,25 @@ function getTelemetryData(message: any): CarTelemetryData[] {
 
 function getButtonStatus(message:any):Uint32Array{
   //ヘッダー（24Byte）を除く
-  const offset = 24 + 55*22;
+  const offset = 24 + 58*22;
   return message.readUInt32LE(offset);
 }
 
 function getMfdPanelIndex(message:any):Uint8Array{
   //ヘッダー（24Byte）を除く
-  const offset = 24 + 55*22 + 4;
+  const offset = 24 + 58*22 + 4;
   return message.readUInt8(offset);
 }
 
 function getMfdPanelIndexSecondary(message:any):Uint8Array{
   //ヘッダー（24Byte）を除く
-  const offset = 24 + 55*22 + 5;
+  const offset = 24 + 58*22 + 5;
   return message.readUInt8(offset);
 }
 
 function getSuggestedGear(message:any):Int8Array{
   //ヘッダー（24Byte）を除く
-  const offset = 24 + 55*22 + 6;
+  const offset = 24 + 58*22 + 6;
   return message.readInt8(offset);
 }
 
