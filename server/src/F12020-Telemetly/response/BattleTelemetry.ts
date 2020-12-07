@@ -146,9 +146,7 @@ export function createBattleTelemetryResponse(
     });
 
     if(data.length==3 &&data[0].distance&&data[1].distance&&data[2].distance){
-      const frontDistance = data[0].distance - data[1].distance;
-      const backDistance = data[1].distance- data[2].distance;
-      if(frontDistance>backDistance){
+      if(data[1].distance<data[2].distance){
         return data.slice(0,2);
       }else{
         return data.slice(1,3);
