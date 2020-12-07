@@ -72,14 +72,28 @@ export function createTimeTableResponse(
             : undefined)
         );
       });
-      const sector1 = lapTimeItem ? lapTimeItem.showLapTime.sector1 : undefined;
+      const sector1 = lapTimeItem
+        ? lapTimeItem.showLapTime.sector1
+          ? lapTimeItem.showLapTime.sector1
+          : undefined
+        : undefined;
 
-      const sector2 = lapTimeItem ? lapTimeItem.showLapTime.sector2 : undefined;
+      const sector2 = lapTimeItem
+        ? lapTimeItem.showLapTime.sector2
+          ? lapTimeItem.showLapTime.sector2
+          : undefined
+        : undefined;
 
-      const sector3 = lapTimeItem ? lapTimeItem.showLapTime.sector3 : undefined;
+      const sector3 = lapTimeItem
+        ? lapTimeItem.showLapTime.sector3
+          ? lapTimeItem.showLapTime.sector3
+          : undefined
+        : undefined;
 
       const lastLapTime = lapTimeItem
         ? lapTimeItem.showLapTime.laptime
+          ? lapTimeItem.showLapTime.laptime
+          : undefined
         : undefined;
 
       return {

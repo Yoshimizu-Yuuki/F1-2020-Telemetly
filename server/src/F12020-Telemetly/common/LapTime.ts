@@ -6,10 +6,10 @@ export default interface LapTime {
 }
 
 interface OneLapTime {
-  sector1?: number;
-  sector2?: number;
-  sector3?: number;
-  laptime?: number;
+  sector1: number;
+  sector2: number;
+  sector3: number;
+  laptime: number;
 }
 
 let lapTimeData = [
@@ -39,7 +39,7 @@ let lapTimeData = [
   (el): LapTime => {
     return {
       carPosition: 0,
-      showLapTime: {}
+      showLapTime: { sector1: 0, sector2: 0, sector3: 0, laptime: 0 }
     };
   }
 );
@@ -68,6 +68,8 @@ export function updateLapTime(carLapData: PacketLapData) {
       //表示用データ
       lapTimeData[index].showLapTime = {
         sector1: parseInt(el.m_sector1TimeInMS.toString(), 10),
+        sector2: 0,
+        sector3: 0,
         laptime: lastLapTime
       };
     } else if (sector == 2) {
@@ -75,6 +77,7 @@ export function updateLapTime(carLapData: PacketLapData) {
       lapTimeData[index].showLapTime = {
         sector1: parseInt(el.m_sector1TimeInMS.toString(), 10),
         sector2: parseInt(el.m_sector2TimeInMS.toString(), 10),
+        sector3: 0,
         laptime: lastLapTime
       };
     }

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DeltaTime_1 = require("./F12020-Telemetly/common/DeltaTime");
+const LapTime_1 = require("./F12020-Telemetly/common/LapTime");
 const PacketCarStatusData_1 = __importDefault(require("./F12020-Telemetly/PacketCarStatusData"));
 const PacketLapData_1 = __importDefault(require("./F12020-Telemetly/PacketLapData"));
 const PacketParticipantsData_1 = __importDefault(require("./F12020-Telemetly/PacketParticipantsData"));
@@ -48,7 +49,8 @@ server.on("message", function (message, remote) {
         const result = PacketLapData_1.default(message);
         lapData = result;
         if (lapData) {
-            DeltaTime_1.createDeltaTime(lapData);
+            DeltaTime_1.updateDeltaTime(lapData);
+            LapTime_1.updateLapTime(lapData);
         }
     }
     else if (message.byteLength == 1344) {
@@ -68,7 +70,7 @@ const router = express_1.default.Router();
 router.get("/timetable", (req, res) => {
     res.send(JSON.stringify({
         status: 200,
-        timetable: TimeTable_1.createTimeTableResponse(lapData, carStatusData, participantsData)
+        timetable: TimeTable_1.createTimeTableResponse(lapData, carStatusData, participantsData, DeltaTime_1.getDeltaTime(), LapTime_1.getLapTime())
     }));
 });
 router.get("/settingtable", (req, res) => {

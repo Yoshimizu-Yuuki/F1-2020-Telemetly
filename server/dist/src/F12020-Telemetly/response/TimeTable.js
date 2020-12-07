@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTimeTableResponse = void 0;
 const common_1 = require("../common/common");
 // createTimeTableのレスポンスデータを作成する
-function createTimeTableResponse(lapData, carStatusData, participantsData) {
+function createTimeTableResponse(lapData, carStatusData, participantsData, deltaTime, lapTime) {
     return [
         0,
         1,
@@ -27,7 +27,43 @@ function createTimeTableResponse(lapData, carStatusData, participantsData) {
         19,
         20,
         21
-    ].map((el, index) => {
+    ]
+        .map((el, index) => {
+        const deltaTimeItem = deltaTime.find((el) => {
+            return (el.carPosition ==
+                (lapData
+                    ? parseInt(lapData.m_lapData[index].m_carPosition.toString(), 10)
+                    : undefined));
+        });
+        const distance = deltaTimeItem
+            ? deltaTimeItem.lastTimeDuration
+            : undefined;
+        const lapTimeItem = lapTime.find((el) => {
+            return (el.carPosition ==
+                (lapData
+                    ? parseInt(lapData.m_lapData[index].m_carPosition.toString(), 10)
+                    : undefined));
+        });
+        const sector1 = lapTimeItem
+            ? lapTimeItem.showLapTime.sector1
+                ? lapTimeItem.showLapTime.sector1
+                : undefined
+            : undefined;
+        const sector2 = lapTimeItem
+            ? lapTimeItem.showLapTime.sector2
+                ? lapTimeItem.showLapTime.sector2
+                : undefined
+            : undefined;
+        const sector3 = lapTimeItem
+            ? lapTimeItem.showLapTime.sector3
+                ? lapTimeItem.showLapTime.sector3
+                : undefined
+            : undefined;
+        const lastLapTime = lapTimeItem
+            ? lapTimeItem.showLapTime.laptime
+                ? lapTimeItem.showLapTime.laptime
+                : undefined
+            : undefined;
         return {
             teamName: participantsData
                 ? common_1.getTeamName(parseInt(participantsData.m_participants[index].m_teamId.toString(), 10))
@@ -47,25 +83,20 @@ function createTimeTableResponse(lapData, carStatusData, participantsData) {
             carPosition: lapData
                 ? parseInt(lapData.m_lapData[index].m_carPosition.toString(), 10)
                 : undefined,
-            sector1: lapData
-                ? parseInt(lapData.m_lapData[index].m_sector1TimeInMS.toString(), 10)
-                : undefined,
-            sector2: lapData
-                ? parseInt(lapData.m_lapData[index].m_sector2TimeInMS.toString(), 10)
-                : undefined,
-            distance: lapData
-                ? parseFloat(lapData.m_lapData[index].m_totalDistance.toString())
-                : 0,
-            lastLapTime: lapData
-                ? parseFloat(lapData.m_lapData[index].m_lastLapTime.toString())
-                : undefined,
+            sector1,
+            sector2,
+            sector3,
+            distance,
+            lastLapTime,
             bestLapTime: lapData
                 ? parseFloat(lapData.m_lapData[index].m_bestLapTime.toString())
                 : undefined //べストラップ
         };
-    }).filter((el) => {
+    })
+        .filter((el) => {
         return el.carPosition !== 0;
-    }).sort((firstEl, secondEl) => {
+    })
+        .sort((firstEl, secondEl) => {
         if (firstEl.carPosition && secondEl.carPosition)
             return firstEl.carPosition - secondEl.carPosition;
         else
