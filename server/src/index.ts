@@ -1,19 +1,30 @@
-import { createDeltaTime, getDeltaTime } from "./F12020-Telemetly/common/DeltaTime";
-import getPacketCarStatusData,{ PacketCarStatusData } from "./F12020-Telemetly/PacketCarStatusData";
+import {
+  updateDeltaTime,
+  getDeltaTime
+} from "./F12020-Telemetly/common/DeltaTime";
+import { updateLapTime, getLapTime } from "./F12020-Telemetly/common/LapTime";
+import getPacketCarStatusData, {
+  PacketCarStatusData
+} from "./F12020-Telemetly/PacketCarStatusData";
 import getPacketLapData, {
   PacketLapData
 } from "./F12020-Telemetly/PacketLapData";
 import getPacketParticipantsData, {
   PacketParticipantsData
 } from "./F12020-Telemetly/PacketParticipantsData";
-import getPacketCarSetupData, { PacketCarSetupData } from "./F12020-Telemetly/PacketCarSetupData";
+import getPacketCarSetupData, {
+  PacketCarSetupData
+} from "./F12020-Telemetly/PacketCarSetupData";
 import { createTimeTableResponse } from "./F12020-Telemetly/response/TimeTable";
 import { createSettingTableResponse } from "./F12020-Telemetly/response/SettingTable";
-import {createBattleTelemetryResponse} from "./F12020-Telemetly/response/BattleTelemetry";
+import { createBattleTelemetryResponse } from "./F12020-Telemetly/response/BattleTelemetry";
 import express from "express";
-import getPacketCarTelemetryData, { PacketCarTelemetryData } from "./F12020-Telemetly/PacketCarTelemetryData";
-import getPacketSessionData, { PacketSessionData } from "./F12020-Telemetly/PacketSessionData";
-
+import getPacketCarTelemetryData, {
+  PacketCarTelemetryData
+} from "./F12020-Telemetly/PacketCarTelemetryData";
+import getPacketSessionData, {
+  PacketSessionData
+} from "./F12020-Telemetly/PacketSessionData";
 
 const cors = require("cors");
 const app: express.Express = express();
@@ -30,7 +41,7 @@ let carStatusData: PacketCarStatusData | null = null;
 let participantsData: PacketParticipantsData | null = null;
 let carSetupData: PacketCarSetupData | null = null;
 let carTelemetryData: PacketCarTelemetryData | null = null;
-let sessionData: PacketSessionData| null = null;
+let sessionData: PacketSessionData | null = null;
 
 server.on("listening", function () {
   const address = server.address();
@@ -52,13 +63,14 @@ server.on("message", function (message: any, remote: any) {
   } else if (message.byteLength == 1190) {
     const result = getPacketLapData(message);
     lapData = result;
-    if(lapData){
-      createDeltaTime(lapData);
+    if (lapData) {
+      updateDeltaTime(lapData);
+      updateLapTime(lapData);
     }
   } else if (message.byteLength == 1344) {
     const result = getPacketCarStatusData(message);
     carStatusData = result;
-  }else if(message.byteLength == 1102){
+  } else if (message.byteLength == 1102) {
     const result = getPacketCarSetupData(message);
     carSetupData = result;
   }
@@ -78,7 +90,9 @@ router.get("/timetable", (req: express.Request, res: express.Response) => {
       timetable: createTimeTableResponse(
         lapData,
         carStatusData,
-        participantsData
+        participantsData,
+        getDeltaTime(),
+        getLapTime()
       )
     })
   );
@@ -98,21 +112,24 @@ router.get("/settingtable", (req: express.Request, res: express.Response) => {
   );
 });
 
-router.get("/battletelemetry", (req: express.Request, res: express.Response) => {
-  res.send(
-    JSON.stringify({
-      status: 200,
-      battletelemetry: createBattleTelemetryResponse(
-        lapData,
-        carStatusData,
-        participantsData,
-        carTelemetryData,
-        sessionData,
-        getDeltaTime()
-      )
-    })
-  );
-});
+router.get(
+  "/battletelemetry",
+  (req: express.Request, res: express.Response) => {
+    res.send(
+      JSON.stringify({
+        status: 200,
+        battletelemetry: createBattleTelemetryResponse(
+          lapData,
+          carStatusData,
+          participantsData,
+          carTelemetryData,
+          sessionData,
+          getDeltaTime()
+        )
+      })
+    );
+  }
+);
 
 app.use(router);
 
