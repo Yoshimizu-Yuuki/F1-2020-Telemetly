@@ -139,10 +139,22 @@ const driverIds: { [id: number]: string } = {
   89: "Ralph Boschung"
 };
 
+const tyreIds: { [id: number]: string } = {
+  16: "soft",
+  17: "medium",
+  18: "hard",
+  7: "inter",
+  8: "wet"
+};
+
 export function getTeamName(id: number): string {
   return teamIds[id];
 }
 
 export function getDriverName(id: number): string {
   return driverIds[id];
+}
+
+export function getTyreName(id: number): string {
+  return tyreIds[id];
 }

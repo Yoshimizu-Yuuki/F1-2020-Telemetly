@@ -1,7 +1,7 @@
 import { PacketLapData } from "./../PacketLapData";
 import { PacketCarStatusData } from "./../PacketCarStatusData";
 import { PacketParticipantsData } from "./../PacketParticipantsData";
-import { getTeamName, getDriverName } from "../common/common";
+import { getTeamName, getDriverName, getTyreName } from "../common/common";
 import DeltaTime from "./../common/DeltaTime";
 import LapTime from "../common/LapTime";
 
@@ -9,7 +9,7 @@ export default interface TimeTableResponse {
   teamName?: string; //チーム名
   carNumber?: number; //カーナンバー
   driverName?: string; //ドライバー名
-  visualTyreCompound?: number; //履いているタイヤ
+  visualTyreCompound?: string; //履いているタイヤ
   currentLapNumber?: number; //現在走行中のラップ数
   carPosition?: number; //車のポジション
   sector1?: number; //セクター1 Time
@@ -121,11 +121,13 @@ export function createTimeTableResponse(
             )
           : "", //ドライバー名
         visualTyreCompound: carStatusData
-          ? parseInt(
-              carStatusData.m_carStatusData[
-                index
-              ].m_visualTyreCompound.toString(),
-              10
+          ? getTyreName(
+              parseInt(
+                carStatusData.m_carStatusData[
+                  index
+                ].m_visualTyreCompound.toString(),
+                10
+              )
             )
           : undefined, //履いているタイヤ
         currentLapNumber: lapData
