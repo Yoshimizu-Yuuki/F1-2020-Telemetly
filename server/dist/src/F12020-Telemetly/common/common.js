@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDriverName = exports.getTeamName = void 0;
+exports.getTyreName = exports.getDriverName = exports.getTeamName = void 0;
 const teamIds = {
     0: "Mercedes",
     1: "Ferrari",
-    2: "Red Bull Racing",
+    2: "RedBull",
     3: "Williams",
-    4: "Racing Point",
+    4: "RacingPoint",
     5: "Renault",
-    6: "Alpha Tauri",
+    6: "AlphaTauri",
     7: "Haas",
     8: "McLaren",
-    9: "Alfa Romeo",
+    9: "AlfaRomeo",
     10: "McLaren 1988",
     11: "McLaren 1991",
     12: "Williams 1992",
@@ -140,6 +140,13 @@ const driverIds = {
     88: "Guiliano Alesi",
     89: "Ralph Boschung"
 };
+const tyreIds = {
+    16: "soft",
+    17: "medium",
+    18: "hard",
+    7: "inter",
+    8: "wet"
+};
 function getTeamName(id) {
     return teamIds[id];
 }
@@ -148,3 +155,7 @@ function getDriverName(id) {
     return driverIds[id];
 }
 exports.getDriverName = getDriverName;
+function getTyreName(id) {
+    return tyreIds[id];
+}
+exports.getTyreName = getTyreName;

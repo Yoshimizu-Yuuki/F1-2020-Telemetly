@@ -31,7 +31,7 @@ function BattleTelemetry() {
     <div className='container'>
       {battleTelemetryData.map((el) => {
         return (
-          <div className={"driver-container" + " " + el.teamName}>
+          <div className="driver-container">
             <div className='speedmeter-container'>
               <div className='speedmeter'>
                 <span className='drs'>{el.drs ? "DRS" : ""}</span>
@@ -57,21 +57,15 @@ function BattleTelemetry() {
                 <span
                   className='fl'
                   style={{
-                    backgroundColor:
-                      "hsl(" +
-                      (100 - (el.tyresDamage ? el.tyresDamage[2] : 0)) +
-                      ", 100, 50)"
-                  }}
+                    backgroundColor:"hsl("+(100 - (el.tyresDamage ? el.tyresDamage[2] : 0))+",100%,50%)"
+                    }  }
                 >
                   {el.tyresDamage ? el.tyresDamage[2] : "-"}
                 </span>
                 <span
                   className='fr'
                   style={{
-                    backgroundColor:
-                      "hsl(" +
-                      (100 - (el.tyresDamage ? el.tyresDamage[3] : 0)) +
-                      ", 100, 50)"
+                    backgroundColor:"hsl("+(100 - (el.tyresDamage ? el.tyresDamage[3] : 0))+",100%,50%)"
                   }}
                 >
                   {el.tyresDamage ? el.tyresDamage[3] : "-"}
@@ -79,10 +73,7 @@ function BattleTelemetry() {
                 <span
                   className='rl'
                   style={{
-                    backgroundColor:
-                      "hsl(" +
-                      (100 - (el.tyresDamage ? el.tyresDamage[0] : 0)) +
-                      ", 100, 50)"
+                    backgroundColor:"hsl("+(100 - (el.tyresDamage ? el.tyresDamage[0] : 0))+",100%,50%)"
                   }}
                 >
                   {el.tyresDamage ? el.tyresDamage[0] : "-"}
@@ -90,10 +81,7 @@ function BattleTelemetry() {
                 <span
                   className='rr'
                   style={{
-                    backgroundColor:
-                      "hsl(" +
-                      (100 - (el.tyresDamage ? el.tyresDamage[1] : 0)) +
-                      ", 100, 50)"
+                    backgroundColor:"hsl("+(100 - (el.tyresDamage ? el.tyresDamage[1] : 0))+",100%,50%)"
                   }}
                 >
                   {el.tyresDamage ? el.tyresDamage[1] : "-"}
@@ -104,7 +92,7 @@ function BattleTelemetry() {
               <div className='position'>
                 {el.carPosition ? el.carPosition : "-"}
               </div>
-              <div className='team'>
+              <div className={'team'+" " + el.teamName}>
                 {el.teamName ? el.teamName : "UNKNOWN TEAM"}
               </div>
 
@@ -119,9 +107,9 @@ function BattleTelemetry() {
                   ? "LASTLAP " +
                     (Math.floor(el.lastLapTime / 60) % 60) +
                     ":" +
-                    Math.floor(el.lastLapTime % 60) +
+                    ( '00' + Math.floor(el.lastLapTime % 60)).slice(-2) +
                     ":" +
-                    Math.floor((el.lastLapTime * 1000) % 1000)
+                    ( '000' + Math.floor((el.lastLapTime * 1000) % 1000)).slice(-3)
                   : "LASTLAP NODATA"}
               </div>
             </div>

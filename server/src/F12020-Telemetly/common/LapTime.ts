@@ -56,10 +56,10 @@ export function updateLapTime(carLapData: PacketLapData) {
     if (sector == 0) {
       //表示用データ
       lapTimeData[index].showLapTime = {
-        sector1: parseInt(el.m_sector1TimeInMS.toString(), 10),
-        sector2: parseInt(el.m_sector2TimeInMS.toString(), 10),
+        sector1: lapTimeData[index].showLapTime.sector1,
+        sector2: lapTimeData[index].showLapTime.sector2,
         sector3:
-          lastLapTime -
+          (lastLapTime*1000) -
           lapTimeData[index].showLapTime.sector1 -
           lapTimeData[index].showLapTime.sector2,
         laptime: lastLapTime

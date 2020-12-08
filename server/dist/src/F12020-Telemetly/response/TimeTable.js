@@ -75,7 +75,7 @@ function createTimeTableResponse(lapData, carStatusData, participantsData, delta
                 ? common_1.getDriverName(parseInt(participantsData.m_participants[index].m_driverId.toString(), 10))
                 : "",
             visualTyreCompound: carStatusData
-                ? parseInt(carStatusData.m_carStatusData[index].m_visualTyreCompound.toString(), 10)
+                ? common_1.getTyreName(parseInt(carStatusData.m_carStatusData[index].m_visualTyreCompound.toString(), 10))
                 : undefined,
             currentLapNumber: lapData
                 ? parseInt(lapData.m_lapData[index].m_currentLapNum.toString(), 10)
