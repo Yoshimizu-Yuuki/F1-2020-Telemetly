@@ -31,6 +31,21 @@ function Live() {
     }
   }
 
+  interface Tyre{tyrename:string,initial:string};
+
+
+  const tyreCheck = (num:number):Tyre=>{
+    switch(num%5){
+      case 0:
+        return {tyrename:"soft",initial:"S"};
+      case 1: return {tyrename:"medium",initial:"M"};
+      case 2: return {tyrename:"hard",initial:"H"};
+      case 3: return {tyrename:"intermediate",initial:"I"};
+      case 4: return {tyrename:"wet",initial:"W"}
+      default: return {tyrename:"unknown",initial:"U"}
+    }
+  }
+
   return (
     <div className='container'>
       <div className="overlay-lap-container">
@@ -47,7 +62,7 @@ function Live() {
                 <td className="position">{index + 1}</td>
                 <td className="team" style={{backgroundColor:"hsl("+ (index * 15) +",100%,50%)"}}></td>
                 <td className="driver">{"HAMILTON_" + index}</td>
-                <td className="tyre">S</td>
+                <td className={"tyre "+ tyreCheck(index).tyrename}>{tyreCheck(index).initial}</td>
               </tr>
               )
             })

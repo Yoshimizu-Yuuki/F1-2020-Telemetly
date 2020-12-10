@@ -80,10 +80,25 @@
               color:white;
               background-color: #222;
               border-radius: 50%;
-              font-size: 0.9vw;
-              border:solid 3px red;
+              font-size: 0.8vw;
               text-shadow: 0px 0px 1px rgba(0,0,0,1);
               box-shadow: -2px 0 2px black;
+
+              &.soft{
+                border:solid 3px red;
+              }
+              &.medium{
+                border:solid 3px yellow;
+              }
+              &.hard{
+                border:solid 3px white;
+              }
+              &.intermediate{
+                border:solid 3px green;
+              }
+              &.wet{
+                border:solid 3px blue;
+              }
             }
           }
         }
