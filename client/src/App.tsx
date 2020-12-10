@@ -9,6 +9,7 @@ import {
   import TimeTable from "./pages/TimeTable";
   import SettingTable from "./pages/SettingTable"
   import BattleTelemetry from "./pages/BattleTelemetry"
+  import Live from "./pages/Live"
 
   export default function App() {
     return (
@@ -24,6 +25,9 @@ import {
             </Route>
             <Route path="/battle">
               <BattleTelemetry />
+            </Route>
+            <Route path="/live">
+              <Live />
             </Route>
           </Switch>
       </Router>
