@@ -1,35 +1,90 @@
+*{
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .container {
+  position: relative;
   width: 100vw;
   min-height: 100vh;
   background-color: #222;
-
-  .timetable {
-    width: 100%;
-    border: none;
-    border-spacing: 0;
-    color: white;
-    text-shadow: 1px 1px 2px black;
-
-    .timetable-header {
-      background: linear-gradient(#e66465, #9f3b42);
-      box-shadow: 1px 0px 2px black;
-      height: 3vw;
-      tr {
-        height: inherit;
-      }
+  .overlay-lap-container{
+    .lap{
+      position: absolute;
+      left:47%;
+      top:2vw;
+      width:6%;
+      background-color: rgba(0,0,0,0.7);
+      height:2vw;
+      text-align: center;
+      font-size: 1.2vw;
+      display: inline-flex;
+      align-items: center;
+      justify-content:center;
+      margin-bottom: 1vw;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
     }
-    .timetable-body {
-      tr {
-        border-bottom: solid 1px white;
-        &:nth-child(2n + 1) {
-          background-color: #666;
-        }
-        td {
-          color: white;
-          text-shadow: 1px 1px 2px black;
-          text-align: center;
-          &.driver{
-            
+  }
+  .overlay-container{
+    position: absolute;
+    width:15%;
+    height:100%;
+    left:4%;
+    .ranktable{
+      position: absolute;
+      table-layout: fixed;
+      width:100%;
+      border: none;
+      top:8vw;
+      tbody{
+        tr{
+          display:block;
+          background-color: rgba(0,0,0,0.7);
+          height:1.6vw;
+          border-radius:0 50px 50px 0;
+          margin-top:4px;
+          td{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            &.position{
+              width:1.6vw;
+              height:1.6vw;
+              background-color: white;
+              color:black;
+              text-align: center;
+              border: solid 1px black;
+              font-weight: 600;
+              text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+              border-radius:0 0 8px 0;
+            }
+            &.team{
+              width:0.2vw;
+              height:1.2vw;
+              margin-left: 0.5vw;
+              border-radius: 10px;
+              box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+            }
+            &.driver{
+              margin-left: 0.5vw;
+              width: 60%;
+              height:1.6vw;
+              align-items: center;
+              justify-content: flex-start;
+              text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            }
+            &.tyre{
+              margin-left: 1.6vw;
+              width:1.4vw;
+              height:1.4vw;
+              color:white;
+              background-color: #222;
+              border-radius: 50%;
+              font-size: 0.9vw;
+              border:solid 3px red;
+              text-shadow: 0px 0px 1px rgba(0,0,0,1);
+              box-shadow: -2px 0 2px black;
+            }
           }
         }
       }
