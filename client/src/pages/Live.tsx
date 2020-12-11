@@ -1,5 +1,7 @@
 import React, { useEffect, useState,useRef } from "react";
 import "./Live.scss";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCar } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * フォームで動画ファイルを選択する。
@@ -54,15 +56,20 @@ function Live() {
       {mode==="play"?(
       <div className='overlay-container'>
         <table className="ranktable">
+          <div className="safetycar">
+          <FontAwesomeIcon icon={faCar} />
+          <span>VERTUAL SAFETY CAR</span>
+          </div>
           <tbody>
           {
             [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21].map((el,index)=>{
               return (
                 <tr>
-                <td className="position">{index + 1}</td>
+                <td className={"position " + (index==0?"purple":"")}>{index + 1}</td>
                 <td className="team" style={{backgroundColor:"hsl("+ (index * 15) +",100%,50%)"}}></td>
                 <td className="driver">{"HAMILTON_" + index}</td>
                 <td className={"tyre "+ tyreCheck(index).tyrename}>{tyreCheck(index).initial}</td>
+                <td className="distance">{index +".543"}</td>
               </tr>
               )
             })
