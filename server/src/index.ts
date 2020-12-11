@@ -25,6 +25,8 @@ import getPacketCarTelemetryData, {
 import getPacketSessionData, {
   PacketSessionData
 } from "./F12020-Telemetly/PacketSessionData";
+import { createDeflateRaw } from "zlib";
+import { initLiveTelemetryData, saveLiveTelemetryData, updateLiveTelemetryData } from "./F12020-Telemetly/response/LiveTelemetry";
 
 const cors = require("cors");
 const app: express.Express = express();
@@ -43,6 +45,9 @@ let carSetupData: PacketCarSetupData | null = null;
 let carTelemetryData: PacketCarTelemetryData | null = null;
 let sessionData: PacketSessionData | null = null;
 
+let updateInterval:NodeJS.Timeout;
+let gamePaused:number;
+
 server.on("listening", function () {
   const address = server.address();
   console.log(
@@ -50,10 +55,44 @@ server.on("listening", function () {
   );
 });
 
-server.on("message", function (message: any, remote: any) {
+server.on("message", function (message: Buffer, remote: any) {
+      /*
+    1フレーム目で初期化が可能なもの。
+    Session 2per second
+    Participants 5per second
+    Car Setups 2per Second（いらない？）
+    Lap Data Rate as specified in menus
+    Motion Data いらない？
+    Car Telemetry Rate as specified in menus
+    Car Status Rate as specified in menus
+    PacketEventData m_eventStringCode=="SSTA" = セッション開始のタイミング=このイベントを受信したタイミングから、一定タイミング0.5秒ごとにデータ保存を行えばよいと思われる。 “SEND”=これでデータ保存の終了を行っても良さそう。
+    PacketFinalClassificationData Once at the end of a race = レース終了時に送られるイベント。このパケットを受信したタイミングでデータ保存を終了すればよいと思われる？一旦SSENDでデータを取るのを終了させたい。
+
+    //セッションがポーズされている場合は保存を一旦停止した方がよい session.m_gamePaused=1なら一時停止されている。
+    //パケットを保存する際はセッションタイムも一緒に保存する。最後に読み込んだセッションタイムが、現在のセッションタイムよりも早ければ、そのセッションタイム以上のデータは削除する。
+
+    [id:最後のセッションタイム]=を保存すればいけそう。idがそれ以上のものは削除するみたいな感じ。
+    データを最後に保存する時に成形する。
+
+    */
+    //セッションデータ
   if (message.byteLength == 251) {
     const result = getPacketSessionData(message);
     sessionData = result;
+
+    if(sessionData && sessionData.m_gamePaused){
+      gamePaused = 1;
+      //更新を一次停止
+      clearInterval(updateInterval);
+    }else if(gamePaused){
+      if(sessionData&&parseInt(sessionData.m_gamePaused.toString()) === 0){
+        //更新を再開
+        gamePaused = 0;
+        updateInterval = setInterval(()=>{
+          updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime());
+        },500);
+      } 
+    }
   } else if (message.byteLength == 1307) {
     const result = getPacketCarTelemetryData(message);
     carTelemetryData = result;
@@ -73,6 +112,22 @@ server.on("message", function (message: any, remote: any) {
   } else if (message.byteLength == 1102) {
     const result = getPacketCarSetupData(message);
     carSetupData = result;
+  }else if(message.byteLength ==35){
+    const result = String.fromCharCode(parseInt(message.readUInt8(24).toString()),parseInt(message.readUInt8(25).toString()),parseInt(message.readUInt8(26).toString()),parseInt(message.readUInt8(27).toString()));
+    if(result === "SSTA"){
+      console.log("セッション開始！");
+      initLiveTelemetryData();//初期化しておきます。
+      //保存を開始する。
+      updateInterval = setInterval(()=>{
+        updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime());
+      },500);
+    }else if(result === "SEND"){
+      //保存を終了する
+      console.log("セッション終了！");
+      clearInterval(updateInterval);
+      //セーブする。
+      saveLiveTelemetryData();
+    }
   }
 });
 

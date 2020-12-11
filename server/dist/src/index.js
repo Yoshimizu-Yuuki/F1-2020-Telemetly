@@ -33,6 +33,8 @@ server.on("listening", function () {
     console.log("UDP Server listening on " + address.address + ":" + address.port);
 });
 server.on("message", function (message, remote) {
+
+
     if (message.byteLength == 251) {
         const result = PacketSessionData_1.default(message);
         sessionData = result;
@@ -53,6 +55,7 @@ server.on("message", function (message, remote) {
             LapTime_1.updateLapTime(lapData);
         }
     }
+    //カーステータースデータ。タイヤとか
     else if (message.byteLength == 1344) {
         const result = PacketCarStatusData_1.default(message);
         carStatusData = result;
