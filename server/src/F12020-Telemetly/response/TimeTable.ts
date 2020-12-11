@@ -18,6 +18,7 @@ export default interface TimeTableResponse {
   distance?: number; //先頭との差
   lastLapTime?: number; //最後のラップタイム
   bestLapTime?: number; //べストラップ
+  isFastest?:boolean; //ファステストラップ
 }
 
 // createTimeTableのレスポンスデータを作成する
@@ -26,7 +27,8 @@ export function createTimeTableResponse(
   carStatusData: PacketCarStatusData | null,
   participantsData: PacketParticipantsData | null,
   deltaTime: DeltaTime[],
-  lapTime: LapTime[]
+  lapTime: LapTime[],
+  fastestIndex:number = -1
 ): TimeTableResponse[] {
   return [
     0,
@@ -143,7 +145,8 @@ export function createTimeTableResponse(
         lastLapTime, //最後のラップタイム
         bestLapTime: lapData
           ? parseFloat(lapData.m_lapData[index].m_bestLapTime.toString())
-          : undefined //べストラップ
+          : undefined, //べストラップ
+        isFastest:(index === fastestIndex)
       };
     })
     .filter((el: TimeTableResponse) => {

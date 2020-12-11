@@ -25,8 +25,7 @@ import getPacketCarTelemetryData, {
 import getPacketSessionData, {
   PacketSessionData
 } from "./F12020-Telemetly/PacketSessionData";
-import { createDeflateRaw } from "zlib";
-import { initLiveTelemetryData, saveLiveTelemetryData, updateLiveTelemetryData } from "./F12020-Telemetly/response/LiveTelemetry";
+import { createLiveTelemetryData, initLiveTelemetryData, saveLiveTelemetryData, updateLiveTelemetryData } from "./F12020-Telemetly/response/LiveTelemetry";
 
 const cors = require("cors");
 const app: express.Express = express();
@@ -44,6 +43,7 @@ let participantsData: PacketParticipantsData | null = null;
 let carSetupData: PacketCarSetupData | null = null;
 let carTelemetryData: PacketCarTelemetryData | null = null;
 let sessionData: PacketSessionData | null = null;
+let fastestIndex = 0;
 
 let updateInterval:NodeJS.Timeout;
 let gamePaused:number;
@@ -81,16 +81,13 @@ server.on("message", function (message: Buffer, remote: any) {
     sessionData = result;
 
     if(sessionData && sessionData.m_gamePaused){
-      gamePaused = 1;
-      //更新を一次停止
       clearInterval(updateInterval);
+      gamePaused = 1;
     }else if(gamePaused){
       if(sessionData&&parseInt(sessionData.m_gamePaused.toString()) === 0){
         //更新を再開
         gamePaused = 0;
-        updateInterval = setInterval(()=>{
-          updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime());
-        },500);
+        updateInterval = setInterval(()=>{updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime(),fastestIndex)},500);
       } 
     }
   } else if (message.byteLength == 1307) {
@@ -112,21 +109,23 @@ server.on("message", function (message: Buffer, remote: any) {
   } else if (message.byteLength == 1102) {
     const result = getPacketCarSetupData(message);
     carSetupData = result;
-  }else if(message.byteLength ==35){
+  }else if(message.byteLength == 35){
     const result = String.fromCharCode(parseInt(message.readUInt8(24).toString()),parseInt(message.readUInt8(25).toString()),parseInt(message.readUInt8(26).toString()),parseInt(message.readUInt8(27).toString()));
     if(result === "SSTA"){
       console.log("セッション開始！");
       initLiveTelemetryData();//初期化しておきます。
+      fastestIndex=0;
       //保存を開始する。
-      updateInterval = setInterval(()=>{
-        updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime());
-      },500);
+      updateInterval = setInterval(()=>{updateLiveTelemetryData(sessionData,lapData,carStatusData,participantsData,getDeltaTime(),getLapTime(),fastestIndex)},500);
     }else if(result === "SEND"){
       //保存を終了する
       console.log("セッション終了！");
       clearInterval(updateInterval);
       //セーブする。
       saveLiveTelemetryData();
+    }else if("FTLP"){
+      //ファステストラップ。本当はここに書くべきものでは無さそうだが。
+      fastestIndex = parseInt(message.readUInt8(28).toString(),10);
     }
   }
 });
@@ -138,53 +137,62 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const router: express.Router = express.Router();
-router.get("/timetable", (req: express.Request, res: express.Response) => {
+// router.get("/timetable", (req: express.Request, res: express.Response) => {
+//   res.send(
+//     JSON.stringify({
+//       status: 200,
+//       timetable: createTimeTableResponse(
+//         lapData,
+//         carStatusData,
+//         participantsData,
+//         getDeltaTime(),
+//         getLapTime()
+//       )
+//     })
+//   );
+// });
+
+// router.get("/settingtable", (req: express.Request, res: express.Response) => {
+//   res.send(
+//     JSON.stringify({
+//       status: 200,
+//       settingtable: createSettingTableResponse(
+//         lapData,
+//         carStatusData,
+//         participantsData,
+//         carSetupData
+//       )
+//     })
+//   );
+// });
+
+// router.get(
+//   "/battletelemetry",
+//   (req: express.Request, res: express.Response) => {
+//     res.send(
+//       JSON.stringify({
+//         status: 200,
+//         battletelemetry: createBattleTelemetryResponse(
+//           lapData,
+//           carStatusData,
+//           participantsData,
+//           carTelemetryData,
+//           sessionData,
+//           getDeltaTime()
+//         )
+//       })
+//     );
+//   }
+// );
+
+router.get("/live", (req: express.Request, res: express.Response) => {
   res.send(
     JSON.stringify({
       status: 200,
-      timetable: createTimeTableResponse(
-        lapData,
-        carStatusData,
-        participantsData,
-        getDeltaTime(),
-        getLapTime()
-      )
+      data: createLiveTelemetryData()
     })
   );
 });
-
-router.get("/settingtable", (req: express.Request, res: express.Response) => {
-  res.send(
-    JSON.stringify({
-      status: 200,
-      settingtable: createSettingTableResponse(
-        lapData,
-        carStatusData,
-        participantsData,
-        carSetupData
-      )
-    })
-  );
-});
-
-router.get(
-  "/battletelemetry",
-  (req: express.Request, res: express.Response) => {
-    res.send(
-      JSON.stringify({
-        status: 200,
-        battletelemetry: createBattleTelemetryResponse(
-          lapData,
-          carStatusData,
-          participantsData,
-          carTelemetryData,
-          sessionData,
-          getDeltaTime()
-        )
-      })
-    );
-  }
-);
 
 app.use(router);
 

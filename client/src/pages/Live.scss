@@ -1,3 +1,15 @@
+$mercedes: #3cc;
+$ferrari: #c33;
+$redbull: #33c;
+$mclaren: #e93;
+$renault: #ee0;
+$racingpoint: #e9e;
+$alphatauri: #338;
+$alpharomeo: #900;
+$haas: #666;
+$williams: #9ee;
+
+
 *{
   overflow: hidden;
   box-sizing: border-box;
@@ -27,7 +39,7 @@
   }
   .overlay-container{
     position: absolute;
-    width:20%;
+    width:18%;
     height:100%;
     left:2%;
     .ranktable{
@@ -91,10 +103,40 @@
               margin-left: 0.5vw;
               border-radius: 10px;
               box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+              &.Mercedes {
+                background-color: $mercedes;
+              }
+              &.Ferrari {
+                background-color:$ferrari;
+              }
+              &.RedBull {
+                background-color:$redbull;
+              }
+              &.McLaren {
+                background-color:$mclaren;
+              }
+              &.Renault {
+                background-color:$renault;
+              }
+              &.RacingPoint {
+                background-color:$racingpoint;
+              }
+              &.AlphaTauri {
+                background-color:$alphatauri;
+              }
+              &.AlfaRomeo {
+                background-color:$alpharomeo;
+              }
+              &.Haas {
+                background-color:$haas;
+              }
+              &.Williams {
+                background-color:$williams;
+              }
             }
             &.driver{
               margin-left: 0.5vw;
-              width: 50%;
+              width: 45%;
               height:1.6vw;
               align-items: center;
               justify-content: flex-start;
@@ -102,7 +144,7 @@
             }
             &.distance{
               margin-left: 0;
-              width: 19%;
+              width: 18%;
               height:1.6vw;
               align-items: center;
               justify-content: flex-end;

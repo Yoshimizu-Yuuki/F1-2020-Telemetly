@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTimeTableResponse = void 0;
 const common_1 = require("../common/common");
 // createTimeTableのレスポンスデータを作成する
-function createTimeTableResponse(lapData, carStatusData, participantsData, deltaTime, lapTime) {
+function createTimeTableResponse(lapData, carStatusData, participantsData, deltaTime, lapTime, fastestIndex = -1) {
     return [
         0,
         1,
@@ -90,7 +90,8 @@ function createTimeTableResponse(lapData, carStatusData, participantsData, delta
             lastLapTime,
             bestLapTime: lapData
                 ? parseFloat(lapData.m_lapData[index].m_bestLapTime.toString())
-                : undefined //べストラップ
+                : undefined,
+            isFastest: (index === fastestIndex)
         };
     })
         .filter((el) => {

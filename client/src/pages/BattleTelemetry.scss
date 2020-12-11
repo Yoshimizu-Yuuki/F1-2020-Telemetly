@@ -6,9 +6,9 @@ $redbull: #33c;
 $mclaren: #e93;
 $renault: #ee0;
 $racingpoint: #e9e;
-$alphatauri: #99c;
-$alpharomeo: #c66;
-$haas: #333;
+$alphatauri: #009;
+$alpharomeo: #900;
+$haas: #222;
 $williams: #9ee;
 
 
@@ -204,7 +204,7 @@ $williams: #9ee;
         &.RedBull::before {
           background-color:$redbull;
         }
-        &.Mclaren::before {
+        &.McLaren::before {
           background-color:$mclaren;
         }
         &.Renault::before {
