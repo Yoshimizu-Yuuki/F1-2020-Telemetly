@@ -44,6 +44,40 @@ let lapTimeData = [
   }
 );
 
+export function initLapTime(){
+  lapTimeData = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ].map(
+    (el): LapTime => {
+      return {
+        carPosition: 0,
+        showLapTime: { sector1: 0, sector2: 0, sector3: 0, laptime: 0 }
+      };
+    }
+  );
+}
+
 export function updateLapTime(carLapData: PacketLapData) {
   carLapData.m_lapData.forEach((el, index) => {
     //ポジションを添え字にしたいので、更新。

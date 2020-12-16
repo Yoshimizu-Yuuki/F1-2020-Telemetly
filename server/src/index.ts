@@ -1,8 +1,9 @@
 import {
+  initDeltaTime,
   updateDeltaTime,
   getDeltaTime
 } from "./F12020-Telemetly/common/DeltaTime";
-import { updateLapTime, getLapTime } from "./F12020-Telemetly/common/LapTime";
+import { initLapTime,updateLapTime, getLapTime } from "./F12020-Telemetly/common/LapTime";
 import getPacketCarStatusData, {
   PacketCarStatusData
 } from "./F12020-Telemetly/PacketCarStatusData";
@@ -113,6 +114,8 @@ server.on("message", function (message: Buffer, remote: any) {
     const result = String.fromCharCode(parseInt(message.readUInt8(24).toString()),parseInt(message.readUInt8(25).toString()),parseInt(message.readUInt8(26).toString()),parseInt(message.readUInt8(27).toString()));
     if(result === "SSTA"){
       console.log("セッション開始！");
+      initDeltaTime();
+      initLapTime();
       initLiveTelemetryData();//初期化しておきます。
       fastestIndex=0;
       //保存を開始する。

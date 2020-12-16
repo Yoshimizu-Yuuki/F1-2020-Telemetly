@@ -97,6 +97,8 @@ server.on("message", function (message, remote) {
         const result = String.fromCharCode(parseInt(message.readUInt8(24).toString()), parseInt(message.readUInt8(25).toString()), parseInt(message.readUInt8(26).toString()), parseInt(message.readUInt8(27).toString()));
         if (result === "SSTA") {
             console.log("セッション開始！");
+            DeltaTime_1.initDeltaTime();
+            LapTime_1.initLapTime();
             LiveTelemetry_1.initLiveTelemetryData(); //初期化しておきます。
             fastestIndex = 0;
             //保存を開始する。

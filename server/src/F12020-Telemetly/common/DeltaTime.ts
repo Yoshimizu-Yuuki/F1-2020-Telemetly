@@ -43,6 +43,42 @@ let deltaTimeData = [
   }
 );
 
+export function initDeltaTime(){
+  deltaTimeData = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ].map(
+    (el): DeltaTime => {
+      return {
+        count: 1,
+        carPosition: 0,
+        pointTimeDuration: [0],
+        lastTimeDuration: 0
+      };
+    }
+  );
+}
+
 export function updateDeltaTime(carLapData: PacketLapData) {
   /**
     ・自分自身のtotalDistanceが、前回よりも50m進んだか確認。totalDistance>=count*50

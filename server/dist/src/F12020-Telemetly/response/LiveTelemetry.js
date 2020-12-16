@@ -31,7 +31,6 @@ function saveLiveTelemetryData() {
     if (!fs_1.existsSync("./data/")) {
         fs_1.mkdirSync("./data/");
     }
-    console.log(livedata.length);
     fs_1.writeFileSync("./data/data.json", JSON.stringify(livedata));
 }
 exports.saveLiveTelemetryData = saveLiveTelemetryData;

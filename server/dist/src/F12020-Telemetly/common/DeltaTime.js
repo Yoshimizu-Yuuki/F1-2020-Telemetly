@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDeltaTime = exports.updateDeltaTime = void 0;
+exports.getDeltaTime = exports.updateDeltaTime = exports.initDeltaTime = void 0;
 //レースのデルタタイム。一度開いたらもしかするとさいしょから作り直す必要あり。
 let deltaTimeData = [
     0,
@@ -33,6 +33,40 @@ let deltaTimeData = [
         lastTimeDuration: 0
     };
 });
+function initDeltaTime() {
+    deltaTimeData = [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+    ].map((el) => {
+        return {
+            count: 1,
+            carPosition: 0,
+            pointTimeDuration: [0],
+            lastTimeDuration: 0
+        };
+    });
+}
+exports.initDeltaTime = initDeltaTime;
 function updateDeltaTime(carLapData) {
     /**
       ・自分自身のtotalDistanceが、前回よりも50m進んだか確認。totalDistance>=count*50

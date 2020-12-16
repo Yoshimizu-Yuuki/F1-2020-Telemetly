@@ -53,7 +53,6 @@ export function saveLiveTelemetryData(){
     if(!existsSync("./data/")){
         mkdirSync("./data/");
     }
-    console.log(livedata.length);
     writeFileSync("./data/data.json",JSON.stringify(livedata));
 }
 

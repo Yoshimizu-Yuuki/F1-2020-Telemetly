@@ -8,6 +8,7 @@ $alphatauri: #338;
 $alpharomeo: #900;
 $haas: #666;
 $williams: #9ee;
+$yuyuyu: #6c6;
 
 
 *{
@@ -132,6 +133,9 @@ $williams: #9ee;
               }
               &.Williams {
                 background-color:$williams;
+              }
+              &.Yuyuyu{
+                background-color: $yuyuyu;
               }
             }
             &.driver{

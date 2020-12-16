@@ -58,7 +58,7 @@ const teamIds = {
     54: "Benetton 1995",
     55: "Ferrari 2000",
     56: "Jordan 1991",
-    255: "My Team "
+    255: "Yuyuyu"
 };
 const driverIds = {
     0: "Carlos Sainz",
@@ -138,7 +138,7 @@ const driverIds = {
     86: "Tatiana Calderon",
     87: "Anthoine Hubert",
     88: "Guiliano Alesi",
-    89: "Ralph Boschung"
+    89: "Ralph Boschung",
 };
 const tyreIds = {
     16: "soft",

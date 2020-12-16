@@ -83,10 +83,23 @@ function Live() {
       {mode==="play"?(
       <div className='overlay-container'>
         <table className="ranktable">
-          {/* <div className="safetycar">
-          <FontAwesomeIcon icon={faCar} />
-          <span>VERTUAL SAFETY CAR</span>
-          </div> */}
+
+          {liveTelemetryData.safetiycar == 1?
+            (<div className="safetycar">
+              <FontAwesomeIcon icon={faCar} />
+              <span>SAFETY CAR</span>
+            </div>):
+            null
+          }
+
+          {liveTelemetryData.safetiycar == 2?
+            (<div className="safetycar">
+              <FontAwesomeIcon icon={faCar} />
+              <span>VERTUAL SAFETY CAR</span>
+            </div>):
+            null
+          }
+          
           <tbody>
           {
             liveTelemetryData&&liveTelemetryData.timetable?liveTelemetryData.timetable.map((el:TimeTableResponse)=>{
@@ -94,7 +107,7 @@ function Live() {
                 <tr>
                 <td className={"position" + (el.isFastest?" purple":"")}>{el.carPosition?el.carPosition:null}</td>
                 <td className={"team "+ (el.teamName?el.teamName:"")}></td>
-                <td className="driver">{el.driverName}</td>
+                <td className="driver">{el.driverName?el.driverName:"Yuyuyu"}</td>
                 <td className={"tyre "+ tyreCheck(el.visualTyreCompound?el.visualTyreCompound:"0").tyrename}>{tyreCheck(el.visualTyreCompound?el.visualTyreCompound:"0").initial}</td>
                 <td className="distance">{el.distance?(Math.floor(el.distance/1000)%1000)+"."+('000' + (el.distance % 1000)).slice(-3):"+/-"}</td>
               </tr>
